@@ -19,7 +19,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 #import gspread
-#from pathlib import Path
+from pathlib import Path
 import matplotlib.pyplot as plt
 
 #REMOTE_DATABASE_URL = 'https://docs.google.com/spreadsheets/d/1FgGdpDp5uR22m-37YVRNk4FWufgAQS1NYAYKwUnMdUk/edit#gid=1034852951'
@@ -37,17 +37,17 @@ drug_grouping = {   'Fentanyl-like': ['Fentanyl', "2'-Fluorofentanyl",	"2'-Methy
                     'Xylazine-like': ['Xylazine']
                     }
 
-@st.cache_data
-def load_local_data() -> pd.DataFrame:
-    '''
-    Load the data locally
-    Parameters:
-        - None
-        
-    Returns:
-        - dataframe: 
-    '''
-    return pd.read_excel(Path(LOCAL_DATABASE_FILENAME))
+#@st.cache_data
+#def load_local_data() -> pd.DataFrame:
+#    '''
+#    Load the data locally
+#    Parameters:
+#        - None
+#        
+#    Returns:
+#        - dataframe: 
+#    '''
+#    return pd.read_excel(Path(LOCAL_DATABASE_FILENAME))
 
 @st.cache_data
 def load_remote_data() -> pd.DataFrame:
