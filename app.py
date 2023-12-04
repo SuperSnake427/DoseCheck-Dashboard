@@ -10,9 +10,11 @@
 #
 # Revision History:
 #   - 19 Oct 2023 -- DAH -- Initial coding
+#   - 3 Dec 2023 -- DAH -- Added stimulatnt/opioid grouping and plots
 #
 # References:
 #    - https://medium.com/@max.lutz./how-to-build-a-data-visualization-page-with-streamlit-4ca4999eba64
+#   - https://medium.com/codefile/how-to-run-your-streamlit-apps-in-vscode-3417da669fc
 #
 #############################################################################################
 import streamlit as st
@@ -27,15 +29,38 @@ REMOTE_DATABASE_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTUPZCGv4
 LOCAL_DATABASE_FILENAME = r'./data/UnknownDatabase.xlsx'
 
 drug_grouping = {   'Fentanyl-like': ['Fentanyl', "2'-Fluorofentanyl",	"2'-Methyl fentanyl",	'Acetyl fentanyl',	'Benzyl fentanyl',	'Despropionyl fentanyl (4-ANPP)',	'Fentanyl (hydroxy)',	'Furanylethyl fentanyl',	
-                    'Methyl acetyl fentanyl', 'N-(2C-C) fentanyl', 'N-(2C-D) fentanyl',	'N-Methyl norfentanyl',	'N-methyl fentanyl',	'N-methyl norfentanyl',	'Norfentanyl',	'Phenethyl 4-ANPP'],
-                    'MDMA-like': ['MDMA', 'MDA',	'2,3 MDMA',	'3,4-Dimethoxyamphetamine',	'Amphetamine',	'MBDB',	'MDA 2-aldoxime analogue',	'MDDMA',	'MDEA',	'MMDPPA', 'N-formyl-MDA'],
+                    'Methyl acetyl fentanyl', 'N-(2C-C) fentanyl', 'N-(2C-D) fentanyl',	'N-Methyl norfentanyl',	'N-methyl fentanyl',	'N-methyl norfentanyl',	'Norfentanyl',	'Phenethyl 4-ANPP',
+                    'Fluorofentanyl', 'Bromofentanyl', 'Para-Bromofentanyl', 'Para-Fluorofentanyl', 'Pf-Fentanyl'],
+                    'MDMA-like': ['MDMA', 'MDA', '2,3 MDMA','3,4-Dimethoxyamphetamine',	'Amphetamine',	'MBDB',	'MDA 2-aldoxime analogue',	'MDDMA',	'MDEA',	'MMDPPA', 'N-formyl-MDA', 
+                                  '2-Amino-1-phenylbutane', '3-FA', 'Dimethoxybromoamphetamine (DOB)', 'NNDMA'],
                     'Heroin-like': ['Heroin',	'6-MAM',	'Acetyl codeine'],
                     'Cocaine-like': ['Cocaine',	'Anhydroecgonine methyl ester (AEME)',	'Benzoylecgonine',	'Benzoylecgonine ethyl ester',	'Ecgonine',	'Ecgonine methyl ester (EME)',	'Methylecgonine',	'Pseudoecgonine methyl ester',	'Tropacocaine'],
-                    'Keatmine-like': ['Ketamine', 'Deschloroketamine',	'Ketamine isomer',	'Ketamine-related',	'Norketamine'],
+                    'Keatmine-like': ['Ketamine', 'Deschloroketamine',	'Ketamine isomer',	'Ketamine-related',	    'Norketamine',  '2-Fluoro-2-oxo PCE',    'Tiletamine'],
                     'Carfentanil-like': ['Carfentanil'],
-                    'Nitazene-class opioids': ['5-Aminoisotonitazene',	'Etodesnitazene',	'Etonitazepyne',	'Isotonitazene/protonitazene'],
+                    'Nitazene-class opioids': ['5-Aminoisotonitazene',	'Etodesnitazene',	'Etonitazepyne',    'Metonitazene',	'Isotonitazene/protonitazene'],
                     'Xylazine-like': ['Xylazine']
                     }
+
+
+drug_opioidstimulant = {'Opioids': ['Fentanyl', "2'-Fluorofentanyl",	"2'-Methyl fentanyl",	'Acetyl fentanyl',	'Benzyl fentanyl',	'Despropionyl fentanyl (4-ANPP)',	'Fentanyl (hydroxy)',	'Furanylethyl fentanyl',	
+                            'Methyl acetyl fentanyl', 'N-(2C-C) fentanyl', 'N-(2C-D) fentanyl',	'N-Methyl norfentanyl',	'N-methyl fentanyl',	'N-methyl norfentanyl',	'Norfentanyl',	'Phenethyl 4-ANPP',
+                            'Fluorofentanyl', 'Bromofentanyl', 'Para-Bromofentanyl', 'Para-Fluorofentanyl', 'Pf-Fentanyl', 
+                            # Carfentanil-like
+                            'Carfentanil',
+                            # Nizazene-class
+                            '5-Aminoisotonitazene',	'Etodesnitazene',	'Etonitazepyne',    'Metonitazene',	'Isotonitazene/protonitazene',
+                            # Heroin-like
+                            'Heroin',	'6-MAM',	'Acetyl codeine',
+                            # Others
+                            'Codeine', 'Codeine acetate', 'Codeine acetylated',
+                            'Furanyl UF-17', 'Hydromorphone', 'Morphine', 'Oxycodone'],
+                    'Stimulants': ['MDMA', 'MDA', '2,3 MDMA','3,4-Dimethoxyamphetamine',	'Amphetamine',	'MBDB',	'MDA 2-aldoxime analogue',	'MDDMA',	'MDEA',	'MMDPPA', 'N-formyl-MDA', 
+                            '2-Amino-1-phenylbutane', '3-FA', 'Dimethoxybromoamphetamine (DOB)', 'NNDMA',
+                            # Cocaine-like
+                            'Cocaine',	'Anhydroecgonine methyl ester (AEME)',	'Benzoylecgonine',	'Benzoylecgonine ethyl ester',	'Ecgonine',	'Ecgonine methyl ester (EME)',	'Methylecgonine',	'Pseudoecgonine methyl ester',	'Tropacocaine',
+                            # Others     
+                            '2C-B', 'Ephenidine',   'Metamfepramone',   'N-ethylpentylone',     '2,5-Dimethoxy-4-N-Propylthio-Beta-Nitrostyrene', '2C-T-2', 'Phenethylamine']}
+
 
 #@st.cache_data
 #def load_local_data() -> pd.DataFrame:
@@ -134,9 +159,14 @@ def plot_site_distribution(df):
 #data = load_local_data()
 data = load_remote_data()
 data = cleanup_data(data)
-data_cleaned = group_drugs(data, drug_grouping)
 
 st.title('DoseCheck Dashboard')
+data_cleaned = group_drugs(data, drug_opioidstimulant)
+plot_drug_histogram(data_cleaned, list(drug_opioidstimulant.keys()))
+plot_timecourse(data_cleaned, list(drug_opioidstimulant.keys()))
+
+# Regroup
+data_cleaned = group_drugs(data, drug_grouping)
 plot_drug_histogram(data_cleaned, list(drug_grouping.keys()))
 plot_timecourse(data_cleaned, list(drug_grouping.keys()))
 plot_site_distribution(data_cleaned)
